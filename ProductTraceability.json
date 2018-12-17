@@ -1,0 +1,334 @@
+{
+  "ApplicationName": "ProductTraceability",
+  "DisplayName": "Product Traceability",
+  "Description": "Allows Traceability of Products Such as Chicken Wings between a Manufacturer, Vendor,Distributor and Retailor",
+  "ApplicationRoles": [
+    {
+      "Name": "Manufacturer",
+      "Description": "User that place the Product to the market place and Ship to a particular Vendor"
+    },
+    {
+      "Name": "Vendor",
+      "Description": "User that Receives/Reject product from Manufacturer and Modify/ship to a particular Distributor"
+    },
+    {
+      "Name": "Distibutor",
+      "Description": "User that Receives/Reject product from Manufacturer and /Modify/ship to a particular Retailer"
+    },
+    {
+      "Name": "Retailer",
+      "Description": "User that Receives/Reject product from Distributor"
+    }
+  ],
+  "Workflows": [
+    {
+      "Name": "ProductTraceability",
+      "DisplayName": "Product Traceability",
+      "Description": "Handles the business logic for the Product Traceability scenario",
+      "Initiators": [ "Owner" ],
+      "StartState":  "Active",
+      "Properties": [
+        {
+          "Name": "State",
+          "DisplayName": "State",
+          "Description": "Holds the state of the contract",
+          "Type": {
+            "Name": "state"
+          }
+        },
+        {
+          "Name": "Description",
+          "DisplayName": "Description",
+          "Description": "Describes the Product being Shipping",
+          "Type": {
+            "Name": "string"
+          }
+        },
+        {
+          "Name": "Size",
+          "DisplayName": "Size",
+          "Description": "The asking price for the Product",
+          "Type": {
+            "Name": "money"
+          }
+        }       
+       
+      ],
+      "Constructor": {
+        "Parameters": [
+          {
+            "Name": "description",
+            "Description": "The description of this Product",
+            "DisplayName": "Description",
+            "Type": {
+              "Name": "string"
+            }
+          },
+          {
+            "Name": "price",
+            "Description": "The price of this Product",
+            "DisplayName": "Price",
+            "Type": {
+              "Name": "money"
+            }
+          }
+        ]
+      },
+      "Functions": [
+        {
+          "Name": "Modify",
+          "DisplayName": "Modify",
+          "Description": "Modify the description/size attributes of this Product Traceability instance",
+          "Parameters": [
+            {
+              "Name": "Size",
+              "Description": "The received /Shipping Size of the Product",
+              "DisplayName": "Size",
+              "Type": {
+                "Name": "string"
+              }
+            },
+            {
+              "Name": "Quantity",
+              "Description": "The new Quantity of the Product",
+              "DisplayName": "Quantity",
+              "Type": {
+                "Name": "string"
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Reject",
+          "DisplayName": "Reject",
+          "Description": "Used to cancel this particular instance of Product Traceability",
+          "Parameters": []
+        },
+        
+        {
+          "Name": "Reject",
+          "DisplayName": "Reject",
+          "Description": "Reject the user's product",
+          "Parameters": []
+        },
+        {
+          "Name": "Accept",
+          "DisplayName": "Accept Product",
+          "Description": "Accept the Product",
+          "Parameters": []
+        },
+        
+        {
+          "Name": "Modify",
+          "DisplayName": "Modify ",
+          "Description": "Modify the Size of the product",
+          "Parameters": [
+            {
+              "Name": "size",
+              "DisplayName": "Size",
+              "Type": {
+                "Name": "string"
+              }
+            }
+          ]
+        },
+
+        {
+          "Name": "Modify",
+          "DisplayName": "Modify ",
+          "Description": "Modify the Quanity of the product",
+          "Parameters": [
+            {
+              "Name": "qunaity",
+              "DisplayName": "Quantity",
+              "Type": {
+                "Name": "string"
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Accept",
+          "DisplayName": "Accept",
+          "Description": "Accept the Product",
+          "Parameters": []
+        }
+        
+      ],
+      "States": [
+        {
+          "Name": "Active",
+          "DisplayName": "Active",
+          "Description": "The initial state of the Product Traceability workflow",
+          "PercentComplete": 20,
+          "Style": "Success",
+          "Transitions": [
+             {
+              "AllowedRoles": [ "Vendor" ],
+              "AllowedInstanceRoles": [],
+              "Description": "Accept  this Product",
+              "Function": "Accept",
+              "NextStates": [ "Accepted" ],
+              "DisplayName": "Accpted the product"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Vendor" ],
+              "Description": "Cancels this instance of Product Traceability",
+              "Function": "Reject",
+              "NextStates": [ "Rejectd" ],
+              "DisplayName": "Reject Product"
+            },
+            {
+              "AllowedRoles": [ "Distributor" ],
+              "AllowedInstanceRoles": [],
+              "Description": "Accept  this Product",
+              "Function": "Accept",
+              "NextStates": [ "Accepted" ],
+              "DisplayName": "Accpted the product"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Distributor" ],
+              "Description": "Cancels this instance of Product Traceability",
+              "Function": "Reject",
+              "NextStates": [ "Rejectd" ],
+              "DisplayName": "Reject Product"
+            },
+            {
+              "AllowedRoles": [ "Retailer" ],
+              "AllowedInstanceRoles": [],
+              "Description": "Accept  this Product",
+              "Function": "Accept",
+              "NextStates": [ "Accepted" ],
+              "DisplayName": "Accpted the product"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Retailer" ],
+              "Description": "Cancels this instance of Product Traceability",
+              "Function": "Reject",
+              "NextStates": [ "Rejectd" ],
+              "DisplayName": "Reject Product"
+            }
+          ]
+        },
+        {
+          "Name": "Accepted",
+          "DisplayName": "Accpetd product",
+          "Description": "Product has been accepted",
+          "PercentComplete": 30,
+          "Style": "Success",
+          "Transitions": [
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Vendor" ],
+              "Description": "Accept  with or wothout Modified Product",
+              "Function": "Acceptproduct",
+              "NextStates": [ "Shipping" ],
+              "DisplayName": "Accept product"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Vendor" ],
+              "Description": "Reject the proposed  Product",
+              "Function": "Reject",
+              "NextStates": [ "Active" ],
+              "DisplayName": "Reject"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Distributor" ],
+              "Description": "Accept  with or wothout Modified Product",
+              "Function": "Acceptproduct",
+              "NextStates": [ "Shipping" ],
+              "DisplayName": "Accept product"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Distributor" ],
+              "Description": "Reject the proposed  Product",
+              "Function": "Reject",
+              "NextStates": [ "Active" ],
+              "DisplayName": "Reject"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Retailer" ],
+              "Description": "Accept  with or wothout Modified Product",
+              "Function": "Acceptproduct",
+              "NextStates": [ "Shipping" ],
+              "DisplayName": "Accept product"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Retailer" ],
+              "Description": "Reject the proposed  Product",
+              "Function": "Reject",
+              "NextStates": [ "Active" ],
+              "DisplayName": "Reject"
+            }           
+          ]
+        },
+        {
+          "Name": "Shipping",
+          "DisplayName": "Shiping the product",
+          "Description": "Product is being Shipped",
+          "PercentComplete": 40,
+          "Style": "Success",
+          "Transitions": [
+             {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Vendor" ],
+              "Description": "Cancel the product",
+              "Function": "Reject",
+              "NextStates": [ "Rejectd" ],
+              "DisplayName": "Reject"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Vendor" ],
+              "Description": "Accept the product",
+              "Function": "Accept",
+              "NextStates": [ "Accepted" ],
+              "DisplayName": "Accept"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Distributor" ],
+              "Description": "Accept the product",
+              "Function": "Accept",
+              "NextStates": [ "Accept" ],
+              "DisplayName": "Accept"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Distributor" ],
+              "Description": "Cancel the product",
+              "Function": "Reject",
+              "NextStates": [ "Rejectd" ],
+              "DisplayName": "Reject"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Retailer" ],
+              "Description": "Cancel the product",
+              "Function": "Reject",
+              "NextStates": [ "Rejectd" ],
+              "DisplayName": "Reject"
+            },
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Retailer" ],
+              "Description": "Accept the product",
+              "Function": "Accept",
+              "NextStates": [ "Accepted" ],
+              "DisplayName": "Accept"
+            }
+          ]
+        }
+        
+      ]
+    }
+  ]
+}
